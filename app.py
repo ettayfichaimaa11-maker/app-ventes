@@ -15,19 +15,20 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Fond dégradé pour la page */
+    /* Fond sombre dégradé */
     .stApp {
-        background: linear-gradient(to right, #f9f9f9, #d0e6f6);
-        color: #333333;
+        background: linear-gradient(to right, #0d0d0d, #1a1a1a);
+        color: #f0f0f0;
     }
     /* Titres stylés */
     h1, h2, h3 {
-        color: #1f77b4;
+        color: #00ffff;  /* Cyan vif */
         font-family: 'Arial Black', sans-serif;
     }
     /* Texte normal */
     p, label, span {
         font-size: 16px;
+        color: #f0f0f0;
     }
     /* Boutons stylés */
     div.stButton > button {
@@ -54,6 +55,8 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+
       
 # ---------- TITRE ----------
 st.title("📊 Prévisions des ventes – Régression multiple")
@@ -103,6 +106,7 @@ if uploaded_file:
 
 else:
     st.info("📌 Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
