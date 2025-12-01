@@ -15,25 +15,47 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+    /* Fond dégradé pour la page */
     .stApp {
-        background-color: #f0f8ff;
+        background: linear-gradient(to right, #f9f9f9, #d0e6f6);
+        color: #333333;
     }
-    h1, h2, h3, h4 {
-        color: #2e8b57;
+    /* Titres stylés */
+    h1, h2, h3 {
+        color: #1f77b4;
+        font-family: 'Arial Black', sans-serif;
     }
+    /* Texte normal */
+    p, label, span {
+        font-size: 16px;
+    }
+    /* Boutons stylés */
     div.stButton > button {
-        background-color: #ff6347;
+        background-color: #ff6f61;
         color: white;
         height: 3em;
-        width: 10em;
-        border-radius: 10px;
+        width: 12em;
+        border-radius: 12px;
         border: none;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+    }
+    div.stButton > button:hover {
+        background-color: #ff3b2f;
+        transform: scale(1.05);
+    }
+    /* Graphiques centrés */
+    .css-1d391kg {
+        display: flex;
+        justify-content: center;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
+      
+# ---------- TITRE ----------
 st.title("📊 Prévisions des ventes – Régression multiple")
 
 # ----------- IMPORTATION -----------  
@@ -81,6 +103,7 @@ if uploaded_file:
 
 else:
     st.info("📌 Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
