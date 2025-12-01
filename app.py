@@ -3,6 +3,37 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
+# ---------- CONFIGURATION DE LA PAGE ----------
+st.set_page_config(
+    page_title="Prévisions des ventes",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# ---------- CSS PERSONNALISÉ ----------
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #f0f8ff;
+    }
+    h1, h2, h3, h4 {
+        color: #2e8b57;
+    }
+    div.stButton > button {
+        background-color: #ff6347;
+        color: white;
+        height: 3em;
+        width: 10em;
+        border-radius: 10px;
+        border: none;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("📊 Prévisions des ventes – Régression multiple")
 
 # ----------- IMPORTATION -----------  
@@ -50,6 +81,7 @@ if uploaded_file:
 
 else:
     st.info("📌 Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
