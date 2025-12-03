@@ -11,26 +11,22 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------- CSS PERSONNALISÉ ----------
+# ---------- CSS ----------
 st.markdown(
     """
     <style>
-    /* Fond sombre dégradé */
     .stApp {
         background: linear-gradient(to right, #0d0d0d, #1a1a1a);
         color: #f0f0f0;
     }
-    /* Titres stylés */
     h1, h2, h3 {
-        color: #00ffff;  /* Cyan vif */
+        color: #00ffff;
         font-family: 'Arial Black', sans-serif;
     }
-    /* Texte normal */
     p, label, span {
         font-size: 16px;
         color: #f0f0f0;
     }
-    /* Boutons stylés */
     div.stButton > button {
         background-color: #ff6f61;
         color: white;
@@ -46,18 +42,11 @@ st.markdown(
         background-color: #ff3b2f;
         transform: scale(1.05);
     }
-    /* Graphiques centrés */
-    .css-1d391kg {
-        display: flex;
-        justify-content: center;
-    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-
-      
 # ---------- TITRE ----------
 st.title("📊 Prévisions des ventes – Régression multiple")
 
@@ -67,7 +56,6 @@ uploaded_file = st.file_uploader("📥 Importer le fichier Excel", type=["xlsx"]
 if uploaded_file:
     df = pd.read_excel(uploaded_file)
 
-    # Réorganisation des colonnes (assure-toi que le fichier contient ces colonnes)
     df = df[["Mois", "Ventes", "Prix", "Publicité (DH)", "Satisfaction (%)"]]
 
     st.subheader(" Données importées")
@@ -91,60 +79,57 @@ if uploaded_file:
     model = LinearRegression()
     model.fit(X, y)
 
-    st.success(" Le modèle a été entraîné avec succès !")
+    st.success("✔ Le modèle a été entraîné avec succès !")
 
-#--Évaluation du modèle--#
+    # ----------- ÉVALUATION DU MODÈLE -----------  
     from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
-import numpy as np
+    import numpy as np
 
-# Prédiction sur les données d'entraînement
-y_pred = model.predict(X)
+    y_pred = model.predict(X)
 
-st.subheader("Évaluation du modèle")
+    st.subheader(" Évaluation du modèle")
 
-r2 = r2_score(y, y_pred)
-mae = mean_absolute_error(y, y_pred)
-rmse = np.sqrt(mean_squared_error(y, y_pred))
+    r2 = r2_score(y, y_pred)
+    mae = mean_absolute_error(y, y_pred)
+    rmse = np.sqrt(mean_squared_error(y, y_pred))
 
-st.metric("• R² (Coefficient de détermination)", f"{r2:.3f}")
-st.metric("• MAE (Erreur moyenne absolue)", f"{mae:.2f}")
-st.metric("• RMSE (Erreur quadratique moyenne)", f"{rmse:.2f}")
+    st.metric("• R²", f"{r2:.3f}")
+    st.metric("• MAE", f"{mae:.2f}")
+    st.metric("• RMSE", f"{rmse:.2f}")
 
-#--coefficient de modèle--#
+    # ---- COEFFICIENTS --
+    st.subheader(" Influence des variables")
 
-st.subheader(" Influence de chaque variable (coefficients)")
+    coeffs = pd.DataFrame({
+        "Variable": ["Prix", "Publicité (DH)", "Satisfaction (%)"],
+        "Coefficient": model.coef_
+    })
 
-coeffs = pd.DataFrame({
-    "Variable": ["Prix", "Publicité (DH)", "Satisfaction (%)"],
-    "Coefficient": model.coef_
-})
+    st.dataframe(coeffs)
 
-st.dataframe(coeffs)
+    # -- HEATMAP CORRÉLATIONS -- 
+    st.subheader(" Heatmap des corrélations")
 
-#--graphe des corrélation--#
-st.subheader(" Heatmap des corrélations")
+    import seaborn as sns
 
-import seaborn as sns
-
-fig_corr, ax_corr = plt.subplots(figsize=(6,4))
-sns.heatmap(df.corr(), annot=True, cmap="coolwarm", fmt=".2f", ax=ax_corr)
-st.pyplot(fig_corr)
-
-
-
+    fig_corr, ax_corr = plt.subplots(figsize=(6,4))
+    sns.heatmap(df.corr(), annot=True, cmap="coolwarm", fmt=".2f", ax=ax_corr)
+    st.pyplot(fig_corr)
 
     # ----------- FORMULAIRE DE PRÉDICTION -----------  
-st.subheader(" Prédiction des ventes")
+    st.subheader(" Prédiction des ventes")
 
-prix = st.number_input("Prix", value=float(df["Prix"].mean()))
-pub = st.number_input("Publicité (DH)", value=float(df["Publicité (DH)"].mean()))
-satisfaction = st.number_input("Satisfaction (%)", value=float(df["Satisfaction (%)"].mean()))
-if st.button("Prédire"):
-  prediction = model.predict([[prix, pub, satisfaction]])[0]
-st.success(f" Prévision des ventes : **{int(prediction)} unités**")
+    prix = st.number_input("Prix", value=float(df["Prix"].mean()))
+    pub = st.number_input("Publicité (DH)", value=float(df["Publicité (DH)"].mean()))
+    satisfaction = st.number_input("Satisfaction (%)", value=float(df["Satisfaction (%)"].mean()))
+
+    if st.button("Prédire"):
+        prediction = model.predict([[prix, pub, satisfaction]])[0]
+        st.success(f" Prévision des ventes : **{int(prediction)} unités**")
 
 else:
     st.info(" Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
