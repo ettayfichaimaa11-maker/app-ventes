@@ -93,6 +93,46 @@ if uploaded_file:
 
     st.success(" Le modèle a été entraîné avec succès !")
 
+#--Évaluation du modèle--#
+    from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+import numpy as np
+
+# Prédiction sur les données d'entraînement
+y_pred = model.predict(X)
+
+st.subheader("Évaluation du modèle")
+
+r2 = r2_score(y, y_pred)
+mae = mean_absolute_error(y, y_pred)
+rmse = np.sqrt(mean_squared_error(y, y_pred))
+
+st.metric("• R² (Coefficient de détermination)", f"{r2:.3f}")
+st.metric("• MAE (Erreur moyenne absolue)", f"{mae:.2f}")
+st.metric("• RMSE (Erreur quadratique moyenne)", f"{rmse:.2f}")
+
+#--coefficient de modèle--#
+
+st.subheader(" Influence de chaque variable (coefficients)")
+
+coeffs = pd.DataFrame({
+    "Variable": ["Prix", "Publicité (DH)", "Satisfaction (%)"],
+    "Coefficient": model.coef_
+})
+
+st.dataframe(coeffs)
+
+#--graphe des corrélation--#
+st.subheader(" Heatmap des corrélations")
+
+import seaborn as sns
+
+fig_corr, ax_corr = plt.subplots(figsize=(6,4))
+sns.heatmap(df.corr(), annot=True, cmap="coolwarm", fmt=".2f", ax=ax_corr)
+st.pyplot(fig_corr)
+
+
+
+
     # ----------- FORMULAIRE DE PRÉDICTION -----------  
     st.subheader(" Prédiction des ventes")
 
@@ -106,6 +146,7 @@ if uploaded_file:
 
 else:
     st.info(" Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
