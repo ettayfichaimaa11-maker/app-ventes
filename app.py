@@ -84,6 +84,18 @@ if fichier_excel:
 
     st.success(" Le modèle est prêt !")
     
+    
+    from sklearn.metrics import r2_score
+
+y_pred = model.predict(X)
+
+st.subheader("📊 Évaluation du modèle")
+
+r2 = r2_score(y, y_pred)
+
+st.metric("R²", f"{r2:.3f}")
+
+    
     st.subheader(" Faites vos prédictions")
 
     prix_input = st.number_input("Prix du produit", value=float(df_ventes["Prix"].mean()))
@@ -112,6 +124,7 @@ else:
   
 
  
+
 
 
 
