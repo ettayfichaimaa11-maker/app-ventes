@@ -47,81 +47,70 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# --- TITRE ---
-st.title("📊 Prévisions des ventes – Régression multiple")
+st.title("📊 Mes prévisions de ventes (Régression multiple)")
 
-# --- IMPORTATION ---  
-uploaded_file = st.file_uploader("📥 Importer le fichier Excel", type=["xlsx"])
 
-if uploaded_file:
-    df = pd.read_excel(uploaded_file)
+fichier_excel = st.file_uploader("📥 Sélectionnez votre fichier Excel", type=["xlsx"])
 
-    df = df[["Mois", "Ventes", "Prix", "Publicité (DH)", "Satisfaction (%)"]]
+if fichier_excel:
+    
+    df_ventes = pd.read_excel(fichier_excel)
+    
+    
+    colonnes_utiles = ["Mois", "Ventes", "Prix", "Publicité (DH)", "Satisfaction (%)"]
+    df_ventes = df_ventes[colonnes_utiles]
+    
+    st.subheader(" Aperçu des données")
+    st.dataframe(df_ventes)
 
-    st.subheader(" Données importées")
-    st.dataframe(df)
-
-    # ---- GRAPHIQUE ----  
-    st.subheader("📈 Évolution des ventes")
+    
+    st.subheader("📈 Graphique des ventes par mois")
     fig, ax = plt.subplots()
-    ax.plot(df["Mois"], df["Ventes"], marker='o')
-    ax.set_xlabel("Mois")
-    ax.set_ylabel("Ventes")
+    ax.plot(df_ventes["Mois"], df_ventes["Ventes"], marker='o', linestyle='--', color='green')
     plt.xticks(rotation=45)
+    plt.xlabel("Mois")
+    plt.ylabel("Ventes")
+    plt.title("Évolution des ventes")
     st.pyplot(fig)
 
-    # --- RÉGRESSION MULTIPLE ----  
-    st.subheader(" Modèle de régression multiple")
+    
+    st.subheader(" Entraînement du modèle de régression")
 
-    X = df[["Prix", "Publicité (DH)", "Satisfaction (%)"]]
-    y = df["Ventes"]
+    X_values = df_ventes[["Prix", "Publicité (DH)", "Satisfaction (%)"]]
+    y_values = df_ventes["Ventes"]
 
-    model = LinearRegression()
-    model.fit(X, y)
+    modele_regression = LinearRegression()
+    modele_regression.fit(X_values, y_values)
 
-    st.success("✔ Le modèle a été entraîné avec succès !")
+    st.success(" Le modèle est prêt !")
 
-    # ----------- ÉVALUATION DU MODÈLE -----------  
-    from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
-    import numpy as np
-
+    
+    from sklearn.metrics import r2_score
     y_pred = model.predict(X)
-
     st.subheader(" Évaluation du modèle")
-
     r2 = r2_score(y, y_pred)
-    mae = mean_absolute_error(y, y_pred)
-    rmse = np.sqrt(mean_squared_error(y, y_pred))
-
     st.metric("• R²", f"{r2:.3f}")
-    st.metric("• MAE", f"{mae:.2f}")
-    st.metric("• RMSE", f"{rmse:.2f}")
 
-    # ---- COEFFICIENTS --
-    st.subheader(" Influence des variables")
+    
+    st.subheader(" Faites vos prédictions")
 
-    coeffs = pd.DataFrame({
-        "Variable": ["Prix", "Publicité (DH)", "Satisfaction (%)"],
-        "Coefficient": model.coef_
-    })
+    prix_input = st.number_input("Prix du produit", value=float(df_ventes["Prix"].mean()))
+    pub_input = st.number_input("Budget publicitaire (DH)", value=float(df_ventes["Publicité (DH)"].mean()))
+    sat_input = st.number_input("Taux de satisfaction (%)", value=float(df_ventes["Satisfaction (%)"].mean()))
 
-    st.dataframe(coeffs)
-
-
-
-    # ---- FORMULAIRE DE PRÉDICTION ---
-    st.subheader(" Prédiction des ventes")
-
-    prix = st.number_input("Prix", value=float(df["Prix"].mean()))
-    pub = st.number_input("Publicité (DH)", value=float(df["Publicité (DH)"].mean()))
-    satisfaction = st.number_input("Satisfaction (%)", value=float(df["Satisfaction (%)"].mean()))
-
-    if st.button("Prédire"):
-        prediction = model.predict([[prix, pub, satisfaction]])[0]
-        st.success(f" Prévision des ventes : **{int(prediction)} unités**")
+    if st.button("Prédire les ventes"):
+        prediction = modele_regression.predict([[prix_input, pub_input, sat_input]])[0]
+        st.success(f" Estimation des ventes : {int(prediction)} unités ")
 
 else:
-    st.info(" Veuillez importer un fichier Excel pour commencer.")
+    st.info(" Importez un fichier Excel pour démarrer l'analyse.")
+
+
+ 
+  
+
+ 
+
 
 
 
