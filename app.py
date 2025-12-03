@@ -83,30 +83,28 @@ if fichier_excel:
     modele_regression.fit(X_values, y_values)
 
     st.success(" Le modèle est prêt !")
-
     
-   st.subheader("Faites vos prédictions")
+    st.subheader(" Faites vos prédictions")
 
+    prix_input = st.number_input("Prix du produit", value=float(df_ventes["Prix"].mean()))
+    pub_input = st.number_input("Budget publicitaire (DH)", value=float(df_ventes["Publicité (DH)"].mean()))
+    sat_input = st.number_input("Taux de satisfaction (%)", value=float(df_ventes["Satisfaction (%)"].mean()))
 
-prix_input = st.number_input(
-    "Prix du produit", value=float(df_ventes["Prix"].mean())
-)
-pub_input = st.number_input(
-    "Budget publicitaire (DH)", value=float(df_ventes["Publicité (DH)"].mean())
-)
-sat_input = st.number_input(
-    "Taux de satisfaction (%)", value=float(df_ventes["Satisfaction (%)"].mean())
-)
-
-
-if st.button("Prédire les ventes"):
-    
-    prediction = modele_regression.predict([[prix_input, pub_input, sat_input]])[0]
-    st.success(f"Estimation des ventes : {int(prediction)} unités")
-
+    if st.button("Prédire les ventes"):
+        prediction = modele_regression.predict([[prix_input, pub_input, sat_input]])[0]
+        st.success(f" Estimation des ventes : {int(prediction)} unités ")
 
 else:
-    st.info("Importez un fichier Excel pour démarrer l'analyse.")
+    st.info(" Importez un fichier Excel pour démarrer l'analyse.")
+
+
+
+
+
+    
+
+
+
 
 
 
@@ -114,6 +112,7 @@ else:
   
 
  
+
 
 
 
