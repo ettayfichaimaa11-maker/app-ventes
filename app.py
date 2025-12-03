@@ -70,7 +70,7 @@ if uploaded_file:
     # Réorganisation des colonnes (assure-toi que le fichier contient ces colonnes)
     df = df[["Mois", "Ventes", "Prix", "Publicité (DH)", "Satisfaction (%)"]]
 
-    st.subheader("📄 Données importées")
+    st.subheader(" Données importées")
     st.dataframe(df)
 
     # ----------- GRAPHIQUE -----------  
@@ -83,7 +83,7 @@ if uploaded_file:
     st.pyplot(fig)
 
     # ----------- RÉGRESSION MULTIPLE -----------  
-    st.subheader("🤖 Modèle de régression multiple")
+    st.subheader(" Modèle de régression multiple")
 
     X = df[["Prix", "Publicité (DH)", "Satisfaction (%)"]]
     y = df["Ventes"]
@@ -91,10 +91,10 @@ if uploaded_file:
     model = LinearRegression()
     model.fit(X, y)
 
-    st.success("✨ Le modèle a été entraîné avec succès !")
+    st.success(" Le modèle a été entraîné avec succès !")
 
     # ----------- FORMULAIRE DE PRÉDICTION -----------  
-    st.subheader("🔮 Prédiction des ventes")
+    st.subheader(" Prédiction des ventes")
 
     prix = st.number_input("Prix", value=float(df["Prix"].mean()))
     pub = st.number_input("Publicité (DH)", value=float(df["Publicité (DH)"].mean()))
@@ -102,10 +102,11 @@ if uploaded_file:
 
     if st.button("Prédire"):
         prediction = model.predict([[prix, pub, satisfaction]])[0]
-        st.success(f"📌 Prévision des ventes : **{int(prediction)} unités**")
+        st.success(f" Prévision des ventes : **{int(prediction)} unités**")
 
 else:
-    st.info("📌 Veuillez importer un fichier Excel pour commencer.")
+    st.info(" Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
