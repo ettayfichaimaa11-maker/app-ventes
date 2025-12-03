@@ -136,9 +136,9 @@ st.pyplot(fig_corr)
     # ----------- FORMULAIRE DE PRÉDICTION -----------  
 st.subheader(" Prédiction des ventes")
 
-    prix = st.number_input("Prix", value=float(df["Prix"].mean()))
-    pub = st.number_input("Publicité (DH)", value=float(df["Publicité (DH)"].mean()))
-    satisfaction = st.number_input("Satisfaction (%)", value=float(df["Satisfaction (%)"].mean()))
+prix = st.number_input("Prix", value=float(df["Prix"].mean()))
+pub = st.number_input("Publicité (DH)", value=float(df["Publicité (DH)"].mean()))
+satisfaction = st.number_input("Satisfaction (%)", value=float(df["Satisfaction (%)"].mean()))
 
     if st.button("Prédire"):
         prediction = model.predict([[prix, pub, satisfaction]])[0]
@@ -146,6 +146,7 @@ st.subheader(" Prédiction des ventes")
 
 else:
     st.info(" Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
