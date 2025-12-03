@@ -4,12 +4,6 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 
-st.set_page_config(
-    page_title="Prévisions des ventes",
-    page_icon="📊",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 
 st.markdown(
@@ -112,6 +106,7 @@ else:
   
 
  
+
 
 
 
