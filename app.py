@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-# ---------- CONFIGURATION DE LA PAGE ----------
+
 st.set_page_config(
     page_title="Prévisions des ventes",
     page_icon="📊",
@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------- CSS ----------
+
 st.markdown(
     """
     <style>
@@ -112,6 +112,7 @@ else:
   
 
  
+
 
 
 
