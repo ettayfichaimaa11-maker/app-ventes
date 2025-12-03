@@ -85,35 +85,36 @@ if fichier_excel:
     st.success(" Le modèle est prêt !")
 
     
-    from sklearn.metrics import r2_score
-    
-    y_pred = model.predict(X)
-    
-    st.subheader(" Évaluation du modèle")
-    
-    r2 = r2_score(y, y_pred)
-    
-    st.metric("• R²", f"{r2:.3f}")
+   st.subheader("Faites vos prédictions")
 
+
+prix_input = st.number_input(
+    "Prix du produit", value=float(df_ventes["Prix"].mean())
+)
+pub_input = st.number_input(
+    "Budget publicitaire (DH)", value=float(df_ventes["Publicité (DH)"].mean())
+)
+sat_input = st.number_input(
+    "Taux de satisfaction (%)", value=float(df_ventes["Satisfaction (%)"].mean())
+)
+
+
+if st.button("Prédire les ventes"):
     
-    st.subheader(" Faites vos prédictions")
+    prediction = modele_regression.predict([[prix_input, pub_input, sat_input]])[0]
+    st.success(f"Estimation des ventes : {int(prediction)} unités")
 
-    prix_input = st.number_input("Prix du produit", value=float(df_ventes["Prix"].mean()))
-    pub_input = st.number_input("Budget publicitaire (DH)", value=float(df_ventes["Publicité (DH)"].mean()))
-    sat_input = st.number_input("Taux de satisfaction (%)", value=float(df_ventes["Satisfaction (%)"].mean()))
-
-    if st.button("Prédire les ventes"):
-        prediction = modele_regression.predict([[prix_input, pub_input, sat_input]])[0]
-        st.success(f" Estimation des ventes : {int(prediction)} unités ")
 
 else:
-    st.info(" Importez un fichier Excel pour démarrer l'analyse.")
+    st.info("Importez un fichier Excel pour démarrer l'analyse.")
+
 
 
  
   
 
  
+
 
 
 
