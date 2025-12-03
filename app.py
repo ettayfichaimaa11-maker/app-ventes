@@ -86,9 +86,13 @@ if fichier_excel:
 
     
     from sklearn.metrics import r2_score
+    
     y_pred = model.predict(X)
+    
     st.subheader(" Évaluation du modèle")
+    
     r2 = r2_score(y, y_pred)
+    
     st.metric("• R²", f"{r2:.3f}")
 
     
@@ -110,6 +114,7 @@ else:
   
 
  
+
 
 
 
