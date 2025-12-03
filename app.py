@@ -134,7 +134,7 @@ st.pyplot(fig_corr)
 
 
     # ----------- FORMULAIRE DE PRÉDICTION -----------  
-    st.subheader(" Prédiction des ventes")
+st.subheader(" Prédiction des ventes")
 
     prix = st.number_input("Prix", value=float(df["Prix"].mean()))
     pub = st.number_input("Publicité (DH)", value=float(df["Publicité (DH)"].mean()))
@@ -146,6 +146,7 @@ st.pyplot(fig_corr)
 
 else:
     st.info(" Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
