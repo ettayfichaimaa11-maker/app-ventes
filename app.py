@@ -47,10 +47,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ---------- TITRE ----------
+# --- TITRE ---
 st.title("📊 Prévisions des ventes – Régression multiple")
 
-# ----------- IMPORTATION -----------  
+# --- IMPORTATION ---  
 uploaded_file = st.file_uploader("📥 Importer le fichier Excel", type=["xlsx"])
 
 if uploaded_file:
@@ -61,7 +61,7 @@ if uploaded_file:
     st.subheader(" Données importées")
     st.dataframe(df)
 
-    # ----------- GRAPHIQUE -----------  
+    # ---- GRAPHIQUE ----  
     st.subheader("📈 Évolution des ventes")
     fig, ax = plt.subplots()
     ax.plot(df["Mois"], df["Ventes"], marker='o')
@@ -70,7 +70,7 @@ if uploaded_file:
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
-    # ----------- RÉGRESSION MULTIPLE -----------  
+    # --- RÉGRESSION MULTIPLE ----  
     st.subheader(" Modèle de régression multiple")
 
     X = df[["Prix", "Publicité (DH)", "Satisfaction (%)"]]
@@ -107,16 +107,9 @@ if uploaded_file:
 
     st.dataframe(coeffs)
 
-    # -- HEATMAP CORRÉLATIONS -- 
-    st.subheader(" Heatmap des corrélations")
 
-    import seaborn as sns
 
-    fig_corr, ax_corr = plt.subplots(figsize=(6,4))
-    sns.heatmap(df.corr(), annot=True, cmap="coolwarm", fmt=".2f", ax=ax_corr)
-    st.pyplot(fig_corr)
-
-    # ----------- FORMULAIRE DE PRÉDICTION -----------  
+    # ---- FORMULAIRE DE PRÉDICTION ---
     st.subheader(" Prédiction des ventes")
 
     prix = st.number_input("Prix", value=float(df["Prix"].mean()))
@@ -129,6 +122,7 @@ if uploaded_file:
 
 else:
     st.info(" Veuillez importer un fichier Excel pour commencer.")
+
 
 
 
